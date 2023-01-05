@@ -1,3 +1,15 @@
+# Print the help menu
+function print_help {
+  echo "Usage: bash script.sh [-s script] [-a args] [-i input] output_file"
+  echo ""
+  echo "Options:"
+  echo "  -s, --script      The script to run. If not specified, the user will be prompted for it."
+  echo "  -a, --args        The arguments to pass to the script. If not specified, no arguments will be passed."
+  echo "  -i, --input       The input file or '-n' for no input. If not specified, the user will be prompted for it."
+  echo "  -h, --help        Show this help menu."
+  echo "  output_file       The output file. If not specified, the user will be prompted for it."
+}
+
 # Initialize variables
 script=""
 args=""
@@ -24,6 +36,10 @@ while [[ $# -gt 0 ]]; do
         shift 2
       fi
       ;;
+    -h|--help)
+      print_help
+      exit
+      ;;
     *)
       output_file=$1
       shift
@@ -47,7 +63,7 @@ if [[ -z "$output_file" ]]; then
 fi
 
 # Clear the output file
-echo "" > "$output_file
+echo "" > "$output_file"
 
 # Read the input file line by line
 while read -r line || [[ -n "$input" ]]; do
@@ -60,7 +76,7 @@ while read -r line || [[ -n "$input" ]]; do
 
   # Check if the script ends in ".py"
   if [[ "$script" == *.py ]]; then
-# Run the script with python3 and append the output to the output file
+    # Run the script with python3 and append the output to the output file
     python3 "$script" "$args" "$line" >> "$output_file"
   # Check if the script ends in ".sh"
   elif [[ "$script" == *.sh ]]; then
